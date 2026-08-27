@@ -15,11 +15,12 @@ type Guide struct {
 }
 
 type Manifest struct {
-	Title       string       `yaml:"title"`
-	Description string       `yaml:"description"`
-	Scopes      []string     `yaml:"scopes"`
-	Clarities   []string     `yaml:"clarities"`
-	Tours       []TourConfig `yaml:"tours"`
+	Title            string       `yaml:"title"`
+	Description      string       `yaml:"description"`
+	Scopes           []string     `yaml:"scopes"`
+	Clarities        []string     `yaml:"clarities"`
+	RelaxedSubguides bool         `yaml:"relaxed_subguides"`
+	Tours            []TourConfig `yaml:"tours"`
 }
 
 type TourConfig struct {

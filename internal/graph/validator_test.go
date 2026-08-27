@@ -145,7 +145,28 @@ func TestValidateGraph(t *testing.T) {
 			wantErr: true,
 		},
 		{
-			name: "invalid sub-guide scope",
+			name: "invalid sub-guide scope (jumping level without relaxed_subguides)",
+			guides: map[string]Guide{
+				"guide1": {
+					ID: "guide1",
+					Metadata: GuideMetadata{
+						Scope:     "lesson", // 4
+						Clarity:   "detailed",
+						SubGuides: []string{"guide2"},
+					},
+				},
+				"guide2": {
+					ID: "guide2",
+					Metadata: GuideMetadata{
+						Scope:   "description", // 2 (differs by 2)
+						Clarity: "detailed",
+					},
+				},
+			},
+			wantErr: true,
+		},
+		{
+			name: "invalid sub-guide scope (larger scope)",
 			guides: map[string]Guide{
 				"guide1": {
 					ID: "guide1",
@@ -299,5 +320,36 @@ func TestCheckAcyclic(t *testing.T) {
 				t.Errorf("CheckAcyclic() error = %v, wantErr %v", err, tt.wantErr)
 			}
 		})
+	}
+}
+
+func TestValidateGraphRelaxedSubguides(t *testing.T) {
+	mockConfig := Manifest{
+		Scopes:           []string{"definition", "description", "explanation", "lesson"},
+		Clarities:        []string{"vague", "introductory", "detailed", "strict"},
+		RelaxedSubguides: true,
+	}
+
+	guides := map[string]Guide{
+		"guide1": {
+			ID: "guide1",
+			Metadata: GuideMetadata{
+				Scope:     "lesson", // 4
+				Clarity:   "detailed",
+				SubGuides: []string{"guide2"},
+			},
+		},
+		"guide2": {
+			ID: "guide2",
+			Metadata: GuideMetadata{
+				Scope:   "description", // 2 (differs by 2)
+				Clarity: "detailed",
+			},
+		},
+	}
+
+	err := ValidateGraph(guides, mockConfig)
+	if err != nil {
+		t.Errorf("ValidateGraph() with relaxed_subguides=true returned error = %v, want no error", err)
 	}
 }

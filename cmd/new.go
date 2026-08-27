@@ -67,6 +67,7 @@ clarities:
   - detailed
   - introductory
   - vague
+relaxed_subguides: false
 tours:
   - name: Tour 1
     guides:

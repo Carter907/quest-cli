@@ -2,6 +2,7 @@ package graph
 
 import (
 	"fmt"
+	"slices"
 )
 
 // CheckAcyclic checks if the knowledge graph is acyclic using DFS
@@ -63,12 +64,7 @@ func getScopeValue(scope string, config Manifest) int {
 }
 
 func isValidClarity(clarity string, config Manifest) bool {
-	for _, c := range config.Clarities {
-		if c == clarity {
-			return true
-		}
-	}
-	return false
+	return slices.Contains(config.Clarities, clarity)
 }
 
 // ValidateGraph checks structural constraints of the knowledge graph
@@ -102,8 +98,17 @@ func ValidateGraph(guides map[string]Guide, config Manifest) error {
 			if !exists {
 				return fmt.Errorf("guide '%s' references unknown sub_guide: '%s'", guide.ID, subID)
 			}
-			if getScopeValue(sub.Metadata.Scope, config) >= getScopeValue(guide.Metadata.Scope, config) {
+
+			guideScopeVal := getScopeValue(guide.Metadata.Scope, config)
+			subScopeVal := getScopeValue(sub.Metadata.Scope, config)
+
+			if subScopeVal >= guideScopeVal {
 				return fmt.Errorf("guide '%s' (scope: '%s') has sub_guide '%s' with invalid scope: '%s'. Sub-guides must have a strictly smaller scope",
+					guide.ID, guide.Metadata.Scope, subID, sub.Metadata.Scope)
+			}
+
+			if !config.RelaxedSubguides && guideScopeVal-subScopeVal != 1 {
+				return fmt.Errorf("guide '%s' (scope: '%s') has sub_guide '%s' with scope: '%s', but relaxed_subguides is false. Sub-guides must be exactly one scope level below their parent",
 					guide.ID, guide.Metadata.Scope, subID, sub.Metadata.Scope)
 			}
 		}
