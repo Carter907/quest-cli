@@ -1,10 +1,13 @@
 ---
-prerequisites: 
-  - Dependent Clauses
-sub_guides: 
+prerequisites:
+    - Dependent Clauses
+sub_guides: []
 clarity: detailed
 scope: explanation
-tags: [grammar, syntax, conditionals]
+tags:
+    - grammar
+    - syntax
+    - conditionals
 ---
 
 ## The If Clause

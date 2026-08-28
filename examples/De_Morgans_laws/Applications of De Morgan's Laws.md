@@ -1,10 +1,12 @@
 ---
-prerequisites: 
-  - De Morgan's Laws
-sub_guides: 
+prerequisites:
+    - De Morgan's Laws
+sub_guides: []
 clarity: detailed
 scope: explanation
-tags: [logic, discrete-math]
+tags:
+    - logic
+    - discrete-math
 ---
 
 ## Simplifying Symbolic Expressions

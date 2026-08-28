@@ -1,14 +1,26 @@
 ---
-prerequisites: 
-sub_guides: 
-  - Present Simple
-  - Past Simple
-  - Past Participle
-  - Past Perfect
-  - Modal Verbs
+prerequisites: []
+sub_guides:
+    - guide: Present Simple
+      clarity: ""
+      segment: ""
+    - guide: Past Simple
+      clarity: ""
+      segment: ""
+    - guide: Past Participle
+      clarity: ""
+      segment: ""
+    - guide: Past Perfect
+      clarity: ""
+      segment: ""
+    - guide: Modal Verbs
+      clarity: ""
+      segment: ""
 clarity: detailed
 scope: explanation
-tags: [grammar, verbs]
+tags:
+    - grammar
+    - verbs
 ---
 
 ## Verb Forms in Conditionals

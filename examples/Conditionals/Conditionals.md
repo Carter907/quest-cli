@@ -1,11 +1,13 @@
 ---
-prerequisites: 
-  - If Clause
-  - Main Clause
-sub_guides: 
+prerequisites:
+    - If Clause
+    - Main Clause
+sub_guides: []
 clarity: detailed
 scope: explanation
-tags: [grammar, conditionals]
+tags:
+    - grammar
+    - conditionals
 ---
 
 ## What is a Conditional Sentence?

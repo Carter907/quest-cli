@@ -1,15 +1,29 @@
 ---
-prerequisites: 
-sub_guides: 
-  - Truth Tables
-  - Logical Equivalence
-  - Logical AND
-  - Logical OR
-  - Exclusive OR
-  - Negation
+prerequisites: []
+sub_guides:
+    - guide: Truth Tables
+      clarity: ""
+      segment: ""
+    - guide: Logical Equivalence
+      clarity: ""
+      segment: ""
+    - guide: Logical AND
+      clarity: ""
+      segment: ""
+    - guide: Logical OR
+      clarity: ""
+      segment: ""
+    - guide: Exclusive OR
+      clarity: ""
+      segment: ""
+    - guide: Negation
+      clarity: ""
+      segment: ""
 clarity: introductory
 scope: lesson
-tags: [logic, discrete-math]
+tags:
+    - logic
+    - discrete-math
 ---
 
 

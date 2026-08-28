@@ -1,10 +1,12 @@
 ---
-prerequisites: 
-  - Clauses
-sub_guides: 
+prerequisites:
+    - Clauses
+sub_guides: []
 clarity: detailed
 scope: explanation
-tags: [grammar, syntax]
+tags:
+    - grammar
+    - syntax
 ---
 
 ## What is a Dependent Clause?

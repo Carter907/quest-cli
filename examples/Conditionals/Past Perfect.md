@@ -1,11 +1,14 @@
 ---
-prerequisites: 
-  - Past Simple
-  - Past Participle
-sub_guides: 
+prerequisites:
+    - Past Simple
+    - Past Participle
+sub_guides: []
 clarity: detailed
 scope: description
-tags: [grammar, verbs, tenses]
+tags:
+    - grammar
+    - verbs
+    - tenses
 ---
 
 ## What is the Past Perfect?

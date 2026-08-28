@@ -1,13 +1,15 @@
 ---
 prerequisites:
-  - Logical Equivalence
-  - Logical AND
-  - Logical OR
-  - Negation
-sub_guides: 
+    - Logical Equivalence
+    - Logical AND
+    - Logical OR
+    - Negation
+sub_guides: []
 clarity: detailed
 scope: explanation
-tags: [logic, discrete-math]
+tags:
+    - logic
+    - discrete-math
 ---
 
 ## Symbolic Representation

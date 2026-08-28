@@ -1,9 +1,11 @@
 ---
-prerequisites: 
-sub_guides: 
+prerequisites: []
+sub_guides: []
 clarity: detailed
 scope: description
-tags: [grammar, verbs]
+tags:
+    - grammar
+    - verbs
 ---
 
 ## What is a Past Participle?

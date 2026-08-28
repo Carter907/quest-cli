@@ -1,9 +1,11 @@
 ---
-prerequisites: 
-sub_guides: 
+prerequisites: []
+sub_guides: []
 clarity: detailed
 scope: explanation
-tags: [logic, discrete-math]
+tags:
+    - logic
+    - discrete-math
 ---
 
 ## What is a Proposition?

@@ -1,16 +1,32 @@
 ---
-prerequisites: 
-sub_guides: 
-  - Conditionals
-  - Verb Forms
-  - Zero Conditional
-  - First Conditional
-  - Second Conditional
-  - Third Conditional
-  - Mixed Conditionals
+prerequisites: []
+sub_guides:
+    - guide: Conditionals
+      clarity: ""
+      segment: ""
+    - guide: Verb Forms
+      clarity: ""
+      segment: ""
+    - guide: Zero Conditional
+      clarity: ""
+      segment: ""
+    - guide: First Conditional
+      clarity: ""
+      segment: ""
+    - guide: Second Conditional
+      clarity: ""
+      segment: ""
+    - guide: Third Conditional
+      clarity: ""
+      segment: ""
+    - guide: Mixed Conditionals
+      clarity: ""
+      segment: ""
 clarity: introductory
 scope: lesson
-tags: [grammar, conditionals]
+tags:
+    - grammar
+    - conditionals
 ---
 
 ## Understanding Conditionals

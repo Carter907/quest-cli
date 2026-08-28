@@ -1,12 +1,14 @@
 ---
-prerequisites: 
-  - Second Conditional
-  - Third Conditional
-  - Verb Forms
-sub_guides: 
+prerequisites:
+    - Second Conditional
+    - Third Conditional
+    - Verb Forms
+sub_guides: []
 clarity: detailed
 scope: explanation
-tags: [grammar, conditionals]
+tags:
+    - grammar
+    - conditionals
 ---
 
 ## Mixed Conditionals

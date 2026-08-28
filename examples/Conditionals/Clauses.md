@@ -1,9 +1,11 @@
 ---
-prerequisites: 
-sub_guides: 
+prerequisites: []
+sub_guides: []
 clarity: detailed
 scope: explanation
-tags: [grammar, syntax]
+tags:
+    - grammar
+    - syntax
 ---
 
 ## What is a Clause?

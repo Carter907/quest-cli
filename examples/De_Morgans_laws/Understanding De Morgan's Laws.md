@@ -1,13 +1,21 @@
 ---
-prerequisites: 
- - Compound Logical Expressions
-sub_guides: 
- - De Morgan's Laws
- - Applications of De Morgan's Laws
- - Cautions of De Morgan's Laws
+prerequisites:
+    - Compound Logical Expressions
+sub_guides:
+    - guide: De Morgan's Laws
+      clarity: ""
+      segment: ""
+    - guide: Applications of De Morgan's Laws
+      clarity: ""
+      segment: ""
+    - guide: Cautions of De Morgan's Laws
+      clarity: ""
+      segment: ""
 clarity: introductory
 scope: lesson
-tags: [logic, discrete-math]
+tags:
+    - logic
+    - discrete-math
 ---
 
 

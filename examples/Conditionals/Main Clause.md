@@ -1,10 +1,13 @@
 ---
-prerequisites: 
-  - Independent Clauses
-sub_guides: 
+prerequisites:
+    - Independent Clauses
+sub_guides: []
 clarity: detailed
 scope: explanation
-tags: [grammar, syntax, conditionals]
+tags:
+    - grammar
+    - syntax
+    - conditionals
 ---
 
 ## The Main Clause
