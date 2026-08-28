@@ -117,7 +117,7 @@ func TestValidateGraph(t *testing.T) {
 					Metadata: GuideMetadata{
 						Scope:     "lesson",
 						Clarity:   "detailed",
-						SubGuides: []string{"guide2"},
+						SubGuides: []SubGuideRelation{{Guide: "guide2"}},
 					},
 				},
 				"guide2": {
@@ -138,7 +138,7 @@ func TestValidateGraph(t *testing.T) {
 					Metadata: GuideMetadata{
 						Scope:     "lesson",
 						Clarity:   "detailed",
-						SubGuides: []string{"unknown_guide"},
+						SubGuides: []SubGuideRelation{{Guide: "unknown_guide"}},
 					},
 				},
 			},
@@ -152,7 +152,7 @@ func TestValidateGraph(t *testing.T) {
 					Metadata: GuideMetadata{
 						Scope:     "lesson", // 4
 						Clarity:   "detailed",
-						SubGuides: []string{"guide2"},
+						SubGuides: []SubGuideRelation{{Guide: "guide2"}},
 					},
 				},
 				"guide2": {
@@ -173,7 +173,7 @@ func TestValidateGraph(t *testing.T) {
 					Metadata: GuideMetadata{
 						Scope:     "explanation",
 						Clarity:   "detailed",
-						SubGuides: []string{"guide2"},
+						SubGuides: []SubGuideRelation{{Guide: "guide2"}},
 					},
 				},
 				"guide2": {
@@ -297,8 +297,8 @@ func TestCheckAcyclic(t *testing.T) {
 		{
 			name: "sub_guide cycle",
 			guides: map[string]Guide{
-				"a": {ID: "a", Metadata: GuideMetadata{SubGuides: []string{"b"}}},
-				"b": {ID: "b", Metadata: GuideMetadata{SubGuides: []string{"a"}}},
+				"a": {ID: "a", Metadata: GuideMetadata{SubGuides: []SubGuideRelation{{Guide: "b"}}}},
+				"b": {ID: "b", Metadata: GuideMetadata{SubGuides: []SubGuideRelation{{Guide: "a"}}}},
 			},
 			wantErr: true,
 		},
@@ -306,7 +306,7 @@ func TestCheckAcyclic(t *testing.T) {
 			name: "mixed prerequisites and sub_guides cycle",
 			guides: map[string]Guide{
 				"a": {ID: "a", Metadata: GuideMetadata{Prerequisites: []string{"b"}}},
-				"b": {ID: "b", Metadata: GuideMetadata{SubGuides: []string{"c"}}},
+				"b": {ID: "b", Metadata: GuideMetadata{SubGuides: []SubGuideRelation{{Guide: "c"}}}},
 				"c": {ID: "c", Metadata: GuideMetadata{Prerequisites: []string{"a"}}},
 			},
 			wantErr: true,
@@ -336,7 +336,7 @@ func TestValidateGraphRelaxedSubguides(t *testing.T) {
 			Metadata: GuideMetadata{
 				Scope:     "lesson", // 4
 				Clarity:   "detailed",
-				SubGuides: []string{"guide2"},
+				SubGuides: []SubGuideRelation{{Guide: "guide2"}},
 			},
 		},
 		"guide2": {

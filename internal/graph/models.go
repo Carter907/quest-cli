@@ -1,17 +1,24 @@
 package graph
 
+type SubGuideRelation struct {
+	Guide   string `yaml:"guide"`
+	Clarity string `yaml:"clarity"`
+	Segment string `yaml:"segment"`
+}
+
 type GuideMetadata struct {
-	Prerequisites []string `yaml:"prerequisites"`
-	SubGuides     []string `yaml:"sub_guides"`
-	Clarity       string   `yaml:"clarity"`
-	Scope         string   `yaml:"scope"`
-	Tags          []string `yaml:"tags"`
+	Prerequisites []string           `yaml:"prerequisites"`
+	SubGuides     []SubGuideRelation `yaml:"sub_guides"`
+	Clarity       string             `yaml:"clarity"`
+	Scope         string             `yaml:"scope"`
+	Tags          []string           `yaml:"tags"`
 }
 
 type Guide struct {
-	ID       string
-	Path     string
-	Metadata GuideMetadata
+	ID        string
+	Path      string
+	Metadata  GuideMetadata
+	LineCount int
 }
 
 type Manifest struct {
@@ -20,6 +27,7 @@ type Manifest struct {
 	Scopes           []string     `yaml:"scopes"`
 	Clarities        []string     `yaml:"clarities"`
 	RelaxedSubguides bool         `yaml:"relaxed_subguides"`
+	StrictCoverage   bool         `yaml:"strict_coverage"`
 	Tours            []TourConfig `yaml:"tours"`
 }
 

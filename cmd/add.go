@@ -129,9 +129,16 @@ qst add Exponent --scope definition --clarity strict`,
 			}
 		}
 
+		var parsedSubguides []graph.SubGuideRelation
+		for _, sg := range addSubGuides {
+			parsedSubguides = append(parsedSubguides, graph.SubGuideRelation{
+				Guide: sg,
+			})
+		}
+
 		meta := graph.GuideMetadata{
 			Prerequisites: addPrerequisites,
-			SubGuides:     addSubGuides,
+			SubGuides:     parsedSubguides,
 			Scope:         addScope,
 			Clarity:       addClarity,
 			Tags:          addTags,
@@ -141,7 +148,7 @@ qst add Exponent --scope definition --clarity strict`,
 			meta.Prerequisites = []string{}
 		}
 		if meta.SubGuides == nil {
-			meta.SubGuides = []string{}
+			meta.SubGuides = []graph.SubGuideRelation{}
 		}
 		if meta.Tags == nil {
 			meta.Tags = []string{}

@@ -15,7 +15,7 @@ clarity: strict
 prerequisites:
   - other
 sub_guides:
-  - sub
+  - guide: sub
 tags:
   - a
   - b

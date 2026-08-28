@@ -78,9 +78,10 @@ func parseGuide(path string) (Guide, error) {
 	}
 
 	return Guide{
-		ID:       id,
-		Path:     path,
-		Metadata: meta,
+		ID:        id,
+		Path:      path,
+		Metadata:  meta,
+		LineCount: len(lines),
 	}, nil
 }
 
