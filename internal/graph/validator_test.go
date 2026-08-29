@@ -18,8 +18,8 @@ func TestValidateGraph(t *testing.T) {
 			name: "valid single guide",
 			guides: map[string]Guide{
 				"guide1": {
-					ID: "guide1",
-					Metadata: GuideMetadata{
+					ID:         "guide1",
+					HasContent: true, Metadata: GuideMetadata{
 						Scope:   "definition",
 						Clarity: "strict",
 					},
@@ -31,8 +31,8 @@ func TestValidateGraph(t *testing.T) {
 			name: "invalid scope",
 			guides: map[string]Guide{
 				"guide1": {
-					ID: "guide1",
-					Metadata: GuideMetadata{
+					ID:         "guide1",
+					HasContent: true, Metadata: GuideMetadata{
 						Scope:   "invalid_scope",
 						Clarity: "strict",
 					},
@@ -44,8 +44,8 @@ func TestValidateGraph(t *testing.T) {
 			name: "invalid clarity",
 			guides: map[string]Guide{
 				"guide1": {
-					ID: "guide1",
-					Metadata: GuideMetadata{
+					ID:         "guide1",
+					HasContent: true, Metadata: GuideMetadata{
 						Scope:   "definition",
 						Clarity: "invalid_clarity",
 					},
@@ -57,16 +57,16 @@ func TestValidateGraph(t *testing.T) {
 			name: "valid prerequisite",
 			guides: map[string]Guide{
 				"guide1": {
-					ID: "guide1",
-					Metadata: GuideMetadata{
+					ID:         "guide1",
+					HasContent: true, Metadata: GuideMetadata{
 						Scope:         "lesson",
 						Clarity:       "detailed",
 						Prerequisites: []string{"guide2"},
 					},
 				},
 				"guide2": {
-					ID: "guide2",
-					Metadata: GuideMetadata{
+					ID:         "guide2",
+					HasContent: true, Metadata: GuideMetadata{
 						Scope:   "lesson",
 						Clarity: "detailed",
 					},
@@ -78,8 +78,8 @@ func TestValidateGraph(t *testing.T) {
 			name: "unknown prerequisite",
 			guides: map[string]Guide{
 				"guide1": {
-					ID: "guide1",
-					Metadata: GuideMetadata{
+					ID:         "guide1",
+					HasContent: true, Metadata: GuideMetadata{
 						Scope:         "lesson",
 						Clarity:       "detailed",
 						Prerequisites: []string{"unknown_guide"},
@@ -92,16 +92,16 @@ func TestValidateGraph(t *testing.T) {
 			name: "mismatched prerequisite scope",
 			guides: map[string]Guide{
 				"guide1": {
-					ID: "guide1",
-					Metadata: GuideMetadata{
+					ID:         "guide1",
+					HasContent: true, Metadata: GuideMetadata{
 						Scope:         "lesson",
 						Clarity:       "detailed",
 						Prerequisites: []string{"guide2"},
 					},
 				},
 				"guide2": {
-					ID: "guide2",
-					Metadata: GuideMetadata{
+					ID:         "guide2",
+					HasContent: true, Metadata: GuideMetadata{
 						Scope:   "definition",
 						Clarity: "detailed",
 					},
@@ -113,16 +113,16 @@ func TestValidateGraph(t *testing.T) {
 			name: "valid sub-guide",
 			guides: map[string]Guide{
 				"guide1": {
-					ID: "guide1",
-					Metadata: GuideMetadata{
+					ID:         "guide1",
+					HasContent: true, Metadata: GuideMetadata{
 						Scope:     "lesson",
 						Clarity:   "detailed",
-						SubGuides: []SubGuideRelation{{Guide: "guide2"}},
+						SubGuides: []SubGuideRelation{{Guide: "guide2", Clarity: "detailed", Segment: "1-10"}},
 					},
 				},
 				"guide2": {
-					ID: "guide2",
-					Metadata: GuideMetadata{
+					ID:         "guide2",
+					HasContent: true, Metadata: GuideMetadata{
 						Scope:   "explanation",
 						Clarity: "detailed",
 					},
@@ -134,8 +134,8 @@ func TestValidateGraph(t *testing.T) {
 			name: "unknown sub-guide",
 			guides: map[string]Guide{
 				"guide1": {
-					ID: "guide1",
-					Metadata: GuideMetadata{
+					ID:         "guide1",
+					HasContent: true, Metadata: GuideMetadata{
 						Scope:     "lesson",
 						Clarity:   "detailed",
 						SubGuides: []SubGuideRelation{{Guide: "unknown_guide"}},
@@ -148,16 +148,16 @@ func TestValidateGraph(t *testing.T) {
 			name: "invalid sub-guide scope (jumping level without relaxed_subguides)",
 			guides: map[string]Guide{
 				"guide1": {
-					ID: "guide1",
-					Metadata: GuideMetadata{
+					ID:         "guide1",
+					HasContent: true, Metadata: GuideMetadata{
 						Scope:     "lesson", // 4
 						Clarity:   "detailed",
-						SubGuides: []SubGuideRelation{{Guide: "guide2"}},
+						SubGuides: []SubGuideRelation{{Guide: "guide2", Clarity: "detailed", Segment: "1-10"}},
 					},
 				},
 				"guide2": {
-					ID: "guide2",
-					Metadata: GuideMetadata{
+					ID:         "guide2",
+					HasContent: true, Metadata: GuideMetadata{
 						Scope:   "description", // 2 (differs by 2)
 						Clarity: "detailed",
 					},
@@ -169,16 +169,16 @@ func TestValidateGraph(t *testing.T) {
 			name: "invalid sub-guide scope (larger scope)",
 			guides: map[string]Guide{
 				"guide1": {
-					ID: "guide1",
-					Metadata: GuideMetadata{
+					ID:         "guide1",
+					HasContent: true, Metadata: GuideMetadata{
 						Scope:     "explanation",
 						Clarity:   "detailed",
-						SubGuides: []SubGuideRelation{{Guide: "guide2"}},
+						SubGuides: []SubGuideRelation{{Guide: "guide2", Clarity: "detailed", Segment: "1-10"}},
 					},
 				},
 				"guide2": {
-					ID: "guide2",
-					Metadata: GuideMetadata{
+					ID:         "guide2",
+					HasContent: true, Metadata: GuideMetadata{
 						Scope:   "lesson", // larger scope than Explanation
 						Clarity: "detailed",
 					},
@@ -190,16 +190,16 @@ func TestValidateGraph(t *testing.T) {
 			name: "cyclic prerequisites",
 			guides: map[string]Guide{
 				"guide1": {
-					ID: "guide1",
-					Metadata: GuideMetadata{
+					ID:         "guide1",
+					HasContent: true, Metadata: GuideMetadata{
 						Scope:         "lesson",
 						Clarity:       "detailed",
 						Prerequisites: []string{"guide2"},
 					},
 				},
 				"guide2": {
-					ID: "guide2",
-					Metadata: GuideMetadata{
+					ID:         "guide2",
+					HasContent: true, Metadata: GuideMetadata{
 						Scope:         "lesson",
 						Clarity:       "detailed",
 						Prerequisites: []string{"guide1"},
@@ -212,24 +212,24 @@ func TestValidateGraph(t *testing.T) {
 			name: "transitive cycle in prerequisites",
 			guides: map[string]Guide{
 				"guide1": {
-					ID: "guide1",
-					Metadata: GuideMetadata{
+					ID:         "guide1",
+					HasContent: true, Metadata: GuideMetadata{
 						Scope:         "lesson",
 						Clarity:       "detailed",
 						Prerequisites: []string{"guide2"},
 					},
 				},
 				"guide2": {
-					ID: "guide2",
-					Metadata: GuideMetadata{
+					ID:         "guide2",
+					HasContent: true, Metadata: GuideMetadata{
 						Scope:         "lesson",
 						Clarity:       "detailed",
 						Prerequisites: []string{"guide3"},
 					},
 				},
 				"guide3": {
-					ID: "guide3",
-					Metadata: GuideMetadata{
+					ID:         "guide3",
+					HasContent: true, Metadata: GuideMetadata{
 						Scope:         "lesson",
 						Clarity:       "detailed",
 						Prerequisites: []string{"guide1"},
@@ -271,8 +271,8 @@ func TestCheckAcyclic(t *testing.T) {
 		{
 			name: "linear acyclic chain",
 			guides: map[string]Guide{
-				"a": {ID: "a", Metadata: GuideMetadata{Prerequisites: []string{"b"}}},
-				"b": {ID: "b", Metadata: GuideMetadata{Prerequisites: []string{"c"}}},
+				"a": {ID: "a", HasContent: true, Metadata: GuideMetadata{Prerequisites: []string{"b"}}},
+				"b": {ID: "b", HasContent: true, Metadata: GuideMetadata{Prerequisites: []string{"c"}}},
 				"c": {ID: "c"},
 			},
 			wantErr: false,
@@ -280,9 +280,9 @@ func TestCheckAcyclic(t *testing.T) {
 		{
 			name: "diamond acyclic graph",
 			guides: map[string]Guide{
-				"a": {ID: "a", Metadata: GuideMetadata{Prerequisites: []string{"b", "c"}}},
-				"b": {ID: "b", Metadata: GuideMetadata{Prerequisites: []string{"d"}}},
-				"c": {ID: "c", Metadata: GuideMetadata{Prerequisites: []string{"d"}}},
+				"a": {ID: "a", HasContent: true, Metadata: GuideMetadata{Prerequisites: []string{"b", "c"}}},
+				"b": {ID: "b", HasContent: true, Metadata: GuideMetadata{Prerequisites: []string{"d"}}},
+				"c": {ID: "c", HasContent: true, Metadata: GuideMetadata{Prerequisites: []string{"d"}}},
 				"d": {ID: "d"},
 			},
 			wantErr: false,
@@ -290,24 +290,24 @@ func TestCheckAcyclic(t *testing.T) {
 		{
 			name: "self-referential cycle",
 			guides: map[string]Guide{
-				"a": {ID: "a", Metadata: GuideMetadata{Prerequisites: []string{"a"}}},
+				"a": {ID: "a", HasContent: true, Metadata: GuideMetadata{Prerequisites: []string{"a"}}},
 			},
 			wantErr: true,
 		},
 		{
 			name: "sub_guide cycle",
 			guides: map[string]Guide{
-				"a": {ID: "a", Metadata: GuideMetadata{SubGuides: []SubGuideRelation{{Guide: "b"}}}},
-				"b": {ID: "b", Metadata: GuideMetadata{SubGuides: []SubGuideRelation{{Guide: "a"}}}},
+				"a": {ID: "a", HasContent: true, Metadata: GuideMetadata{SubGuides: []SubGuideRelation{{Guide: "b"}}}},
+				"b": {ID: "b", HasContent: true, Metadata: GuideMetadata{SubGuides: []SubGuideRelation{{Guide: "a"}}}},
 			},
 			wantErr: true,
 		},
 		{
 			name: "mixed prerequisites and sub_guides cycle",
 			guides: map[string]Guide{
-				"a": {ID: "a", Metadata: GuideMetadata{Prerequisites: []string{"b"}}},
-				"b": {ID: "b", Metadata: GuideMetadata{SubGuides: []SubGuideRelation{{Guide: "c"}}}},
-				"c": {ID: "c", Metadata: GuideMetadata{Prerequisites: []string{"a"}}},
+				"a": {ID: "a", HasContent: true, Metadata: GuideMetadata{Prerequisites: []string{"b"}}},
+				"b": {ID: "b", HasContent: true, Metadata: GuideMetadata{SubGuides: []SubGuideRelation{{Guide: "c"}}}},
+				"c": {ID: "c", HasContent: true, Metadata: GuideMetadata{Prerequisites: []string{"a"}}},
 			},
 			wantErr: true,
 		},
@@ -332,16 +332,16 @@ func TestValidateGraphRelaxedSubguides(t *testing.T) {
 
 	guides := map[string]Guide{
 		"guide1": {
-			ID: "guide1",
-			Metadata: GuideMetadata{
+			ID:         "guide1",
+			HasContent: true, Metadata: GuideMetadata{
 				Scope:     "lesson", // 4
 				Clarity:   "detailed",
-				SubGuides: []SubGuideRelation{{Guide: "guide2"}},
+				SubGuides: []SubGuideRelation{{Guide: "guide2", Clarity: "detailed", Segment: "1-10"}},
 			},
 		},
 		"guide2": {
-			ID: "guide2",
-			Metadata: GuideMetadata{
+			ID:         "guide2",
+			HasContent: true, Metadata: GuideMetadata{
 				Scope:   "description", // 2 (differs by 2)
 				Clarity: "detailed",
 			},

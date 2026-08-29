@@ -1,0 +1,19 @@
+title: C Programming Knowledge Graph
+description: A knowledge graph covering the first 3 chapters of C Programming A Modern Approach.
+scopes:
+  - definition
+  - description
+  - explanation
+  - lesson
+clarities:
+  - strict
+  - detailed
+  - introductory
+  - vague
+relaxed_subguides: false
+tours:
+  - name: Full Course
+    guides:
+      - Chapter 1 Introducing C
+      - Chapter 2 C Fundamentals
+      - Chapter 3 Formatted IO

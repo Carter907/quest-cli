@@ -102,15 +102,33 @@ func isValidClarity(clarity string, config Manifest) bool {
 
 // ValidateGraph checks structural constraints of the knowledge graph
 func ValidateGraph(guides map[string]Guide, config Manifest) error {
+	for _, tour := range config.Tours {
+		for _, tGuide := range tour.Guides {
+			if _, exists := guides[tGuide]; !exists {
+				return fmt.Errorf("tour '%s' references unknown guide: '%s'", tour.Name, tGuide)
+			}
+		}
+	}
+
 	for _, guide := range guides {
+		if !guide.HasContent {
+			return fmt.Errorf("guide '%s' has no markdown content", guide.ID)
+		}
+
 		// Validate Scope
-		if getScopeValue(guide.Metadata.Scope, config) == 0 {
+		guideScopeVal := getScopeValue(guide.Metadata.Scope, config)
+		if guideScopeVal == 0 {
 			return fmt.Errorf("guide '%s' has invalid scope: '%s'", guide.ID, guide.Metadata.Scope)
 		}
 
 		// Validate Clarity
 		if !isValidClarity(guide.Metadata.Clarity, config) {
 			return fmt.Errorf("guide '%s' has invalid clarity: '%s'", guide.ID, guide.Metadata.Clarity)
+		}
+
+		// Check RequireSubguides for non-leaf scopes
+		if config.RequireSubguides && guideScopeVal > 1 && len(guide.Metadata.SubGuides) == 0 {
+			return fmt.Errorf("guide '%s' is a non-leaf scope but has no subguides (require_subguides is true)", guide.ID)
 		}
 
 		// Validate Prerequisites
@@ -129,25 +147,32 @@ func ValidateGraph(guides map[string]Guide, config Manifest) error {
 
 		// Validate SubGuides
 		for _, subRelation := range guide.Metadata.SubGuides {
+			if subRelation.Guide == "" {
+				return fmt.Errorf("guide '%s' has an empty guide reference in its subguides", guide.ID)
+			}
+			if subRelation.Clarity == "" {
+				return fmt.Errorf("guide '%s' is missing clarity for subguide '%s'", guide.ID, subRelation.Guide)
+			}
+			if subRelation.Segment == "" {
+				return fmt.Errorf("guide '%s' is missing segment for subguide '%s'", guide.ID, subRelation.Guide)
+			}
+
 			subID := subRelation.Guide
 			sub, exists := guides[subID]
 			if !exists {
 				return fmt.Errorf("guide '%s' references unknown sub_guide: '%s'", guide.ID, subID)
 			}
 
-			if subRelation.Clarity != "" && !isValidClarity(subRelation.Clarity, config) {
+			if !isValidClarity(subRelation.Clarity, config) {
 				return fmt.Errorf("guide '%s' has invalid subguide clarity: '%s' for subguide '%s'", guide.ID, subRelation.Clarity, subID)
 			}
 
-			if subRelation.Segment != "" {
-				ranges, err := parseSegments(subRelation.Segment)
-				if err != nil {
-					return fmt.Errorf("guide '%s' has invalid segment for subguide '%s': %w", guide.ID, subID, err)
-				}
-				allRanges = append(allRanges, ranges...)
+			ranges, err := parseSegments(subRelation.Segment)
+			if err != nil {
+				return fmt.Errorf("guide '%s' has invalid segment for subguide '%s': %w", guide.ID, subID, err)
 			}
+			allRanges = append(allRanges, ranges...)
 
-			guideScopeVal := getScopeValue(guide.Metadata.Scope, config)
 			subScopeVal := getScopeValue(sub.Metadata.Scope, config)
 
 			if subScopeVal >= guideScopeVal {

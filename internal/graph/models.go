@@ -15,10 +15,11 @@ type GuideMetadata struct {
 }
 
 type Guide struct {
-	ID        string
-	Path      string
-	Metadata  GuideMetadata
-	LineCount int
+	ID         string
+	Path       string
+	Metadata   GuideMetadata
+	LineCount  int
+	HasContent bool
 }
 
 type Manifest struct {
@@ -28,6 +29,7 @@ type Manifest struct {
 	Clarities        []string     `yaml:"clarities"`
 	RelaxedSubguides bool         `yaml:"relaxed_subguides"`
 	StrictCoverage   bool         `yaml:"strict_coverage"`
+	RequireSubguides bool         `yaml:"require_subguides"`
 	Tours            []TourConfig `yaml:"tours"`
 }
 

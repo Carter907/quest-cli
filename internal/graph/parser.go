@@ -50,14 +50,16 @@ func parseGuide(path string) (Guide, error) {
 	lines := strings.Split(string(content), "\n")
 	var frontmatterLines []string
 	inFrontmatter := false
+	frontMatterEnd := 0
 
-	for _, line := range lines {
+	for i, line := range lines {
 		trim := strings.TrimSpace(line)
 		if trim == "---" {
 			if !inFrontmatter {
 				inFrontmatter = true
 				continue
 			} else {
+				frontMatterEnd = i
 				break
 			}
 		}
@@ -77,11 +79,20 @@ func parseGuide(path string) (Guide, error) {
 		return Guide{}, fmt.Errorf("failed to parse yaml: %w", err)
 	}
 
+	hasContent := false
+	for i := frontMatterEnd + 1; i < len(lines); i++ {
+		if strings.TrimSpace(lines[i]) != "" {
+			hasContent = true
+			break
+		}
+	}
+
 	return Guide{
-		ID:        id,
-		Path:      path,
-		Metadata:  meta,
-		LineCount: len(lines),
+		ID:         id,
+		Path:       path,
+		Metadata:   meta,
+		LineCount:  len(lines),
+		HasContent: hasContent,
 	}, nil
 }
 
