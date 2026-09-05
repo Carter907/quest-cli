@@ -43,9 +43,9 @@ tours:
 qst add "Understanding Exponents" --scope lesson --clarity introductory --tags math,algebra
 ```
 
-This command creates a markdown file with populated front-matter. You can also specify prerequisites and sub-guides if you already know the structure you're going for.
+This command creates a markdown file with populated front-matter. You can also specify prerequisites if you already know the structure you're going for.
 
-If you want to link an existing guide or sub-guide later on, you can use the `qst link` command:
+If you want to link an existing sub-guide later on, you can use the `qst link` command:
 
 ```sh
 qst link "Understanding Exponents" --guide "Powers" --clarity detailed --segment 1-5

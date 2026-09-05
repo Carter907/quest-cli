@@ -16,7 +16,6 @@ var (
 	interactive      bool
 	addDir           string
 	addPrerequisites []string
-	addSubGuides     []string
 	addScope         string
 	addClarity       string
 	addTags          []string
@@ -25,7 +24,7 @@ var (
 var addCmd = &cobra.Command{
 	Use:   "add [name]",
 	Short: "Add a new guide to the knowledge graph.",
-	Long:  "Add allows you to insert a guide into the knowledge graph by specifying its prerequisites, subguides, scope, and clarity. A new markdown file will be inserted into the target directory.",
+	Long:  "Add allows you to insert a guide into the knowledge graph by specifying its prerequisites, scope, and clarity. A new markdown file will be inserted into the target directory.",
 	Example: `# Add a new definition
 qst add Exponent --scope definition --clarity strict
 
@@ -48,7 +47,6 @@ qst add Exponent --dir my_graph/`,
 
 		if interactive {
 			prereqString := ""
-			subguideString := ""
 			tagsString := ""
 			var fields []huh.Field
 
@@ -79,13 +77,6 @@ qst add Exponent --dir my_graph/`,
 					Title("Enter prerequisites (separated by a comma)").
 					Placeholder("e.g. Guide 1, Guide 2, Guide 3").
 					Value(&prereqString))
-			}
-
-			if !cmd.Flags().Changed("subguides") {
-				fields = append(fields, huh.NewInput().
-					Title("Enter subguides (separated by a comma)").
-					Placeholder("e.g. Guide 1, Guide 2, Guide 3").
-					Value(&subguideString))
 			}
 
 			if !cmd.Flags().Changed("tags") {
@@ -125,9 +116,6 @@ qst add Exponent --dir my_graph/`,
 			if !cmd.Flags().Changed("prerequisites") {
 				addPrerequisites = parseCSV(prereqString)
 			}
-			if !cmd.Flags().Changed("subguides") {
-				addSubGuides = parseCSV(subguideString)
-			}
 			if !cmd.Flags().Changed("tags") {
 				addTags = parseCSV(tagsString)
 			}
@@ -161,16 +149,8 @@ qst add Exponent --dir my_graph/`,
 			}
 		}
 
-		var parsedSubguides []graph.SubGuideRelation
-		for _, sg := range addSubGuides {
-			parsedSubguides = append(parsedSubguides, graph.SubGuideRelation{
-				Guide: sg,
-			})
-		}
-
 		meta := graph.GuideMetadata{
 			Prerequisites: addPrerequisites,
-			SubGuides:     parsedSubguides,
 			Scope:         addScope,
 			Clarity:       addClarity,
 			Tags:          addTags,
@@ -208,7 +188,6 @@ func init() {
 	addCmd.Flags().BoolVarP(&interactive, "interactive", "i", false, "Interactive mode")
 	addCmd.Flags().StringVarP(&addDir, "dir", "d", ".", "Knowledge graph directory")
 	addCmd.Flags().StringSliceVar(&addPrerequisites, "prerequisites", nil, "List of prerequisites")
-	addCmd.Flags().StringSliceVar(&addSubGuides, "subguides", nil, "List of subguides")
 	addCmd.Flags().StringVar(&addScope, "scope", "", "Scope of the guide (e.g. definition, description)")
 	addCmd.Flags().StringVar(&addClarity, "clarity", "", "Clarity of the guide (e.g. strict, vague)")
 	addCmd.Flags().StringSliceVar(&addTags, "tags", nil, "List of tags")
