@@ -10,15 +10,15 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var seeCmd = &cobra.Command{
-	Use:   "see [directory]",
+var viewCmd = &cobra.Command{
+	Use:   "view [directory]",
 	Short: "Export the knowledge graph to a Mermaid.js diagram",
-	Long:  `The see command reads the knowledge directory and exports its structure as a Mermaid.js graph. Prerequisite links are shown as solid arrows, and sub-guide relationships are shown as dotted arrows.`,
+	Long:  `The view command reads the knowledge directory and exports its structure as a Mermaid.js graph. Prerequisite links are shown as solid arrows, and sub-guide relationships are shown as dotted arrows.`,
 	Example: `# Output mermaid to stdout
-qst see my_knowledge_graph_dir/
+qst view my_knowledge_graph_dir/
 
 # Save to a markdown file
-qst see . > graph.md`,
+qst view . > graph.md`,
 	Args: cobra.MaximumNArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		dir := "."
@@ -76,5 +76,5 @@ func generateMermaid(guides map[string]graph.Guide) string {
 }
 
 func init() {
-	rootCmd.AddCommand(seeCmd)
+	rootCmd.AddCommand(viewCmd)
 }
