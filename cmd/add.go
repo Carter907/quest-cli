@@ -100,7 +100,7 @@ qst add Exponent --dir my_graph/`,
 					huh.NewGroup(fields...),
 				)
 
-				err := form.Run()
+				err = form.Run()
 				if err != nil {
 					fmt.Printf("Failed to run form: %v\n", err)
 					os.Exit(1)

@@ -102,6 +102,19 @@ func isValidClarity(clarity string, config Manifest) bool {
 
 // ValidateGraph checks structural constraints of the knowledge graph
 func ValidateGraph(guides map[string]Guide, config Manifest) error {
+	if err := validateTours(guides, config); err != nil {
+		return err
+	}
+
+	for _, guide := range guides {
+		if err := validateGuide(guide, guides, config); err != nil {
+			return err
+		}
+	}
+	return CheckAcyclic(guides)
+}
+
+func validateTours(guides map[string]Guide, config Manifest) error {
 	for _, tour := range config.Tours {
 		for _, tGuide := range tour.Guides {
 			if _, exists := guides[tGuide]; !exists {
@@ -109,113 +122,131 @@ func ValidateGraph(guides map[string]Guide, config Manifest) error {
 			}
 		}
 	}
+	return nil
+}
 
-	for _, guide := range guides {
-		if !guide.HasContent {
-			return fmt.Errorf("guide '%s' has no markdown content", guide.ID)
+func validateGuide(guide Guide, guides map[string]Guide, config Manifest) error {
+	if !guide.HasContent {
+		return fmt.Errorf("guide '%s' has no markdown content", guide.ID)
+	}
+
+	// Validate Scope
+	guideScopeVal := getScopeValue(guide.Metadata.Scope, config)
+	if guideScopeVal == 0 {
+		return fmt.Errorf("guide '%s' has invalid scope: '%s'", guide.ID, guide.Metadata.Scope)
+	}
+
+	// Validate Clarity
+	if !isValidClarity(guide.Metadata.Clarity, config) {
+		return fmt.Errorf("guide '%s' has invalid clarity: '%s'", guide.ID, guide.Metadata.Clarity)
+	}
+
+	// Check RequireSubguides for non-leaf scopes
+	if config.RequireSubguides && guideScopeVal > 1 && len(guide.Metadata.SubGuides) == 0 {
+		return fmt.Errorf("guide '%s' is a non-leaf scope but has no subguides (require_subguides is true)", guide.ID)
+	}
+
+	if err := validatePrerequisites(guide, guides); err != nil {
+		return err
+	}
+
+	allRanges, err := validateSubGuides(guide, guides, config, guideScopeVal)
+	if err != nil {
+		return err
+	}
+
+	return validateCoverage(guide, allRanges, config)
+}
+
+func validatePrerequisites(guide Guide, guides map[string]Guide) error {
+	for _, prereqID := range guide.Metadata.Prerequisites {
+		prereq, exists := guides[prereqID]
+		if !exists {
+			return fmt.Errorf("guide '%s' references unknown prerequisite: '%s'", guide.ID, prereqID)
 		}
-
-		// Validate Scope
-		guideScopeVal := getScopeValue(guide.Metadata.Scope, config)
-		if guideScopeVal == 0 {
-			return fmt.Errorf("guide '%s' has invalid scope: '%s'", guide.ID, guide.Metadata.Scope)
-		}
-
-		// Validate Clarity
-		if !isValidClarity(guide.Metadata.Clarity, config) {
-			return fmt.Errorf("guide '%s' has invalid clarity: '%s'", guide.ID, guide.Metadata.Clarity)
-		}
-
-		// Check RequireSubguides for non-leaf scopes
-		if config.RequireSubguides && guideScopeVal > 1 && len(guide.Metadata.SubGuides) == 0 {
-			return fmt.Errorf("guide '%s' is a non-leaf scope but has no subguides (require_subguides is true)", guide.ID)
-		}
-
-		// Validate Prerequisites
-		for _, prereqID := range guide.Metadata.Prerequisites {
-			prereq, exists := guides[prereqID]
-			if !exists {
-				return fmt.Errorf("guide '%s' references unknown prerequisite: '%s'", guide.ID, prereqID)
-			}
-			if prereq.Metadata.Scope != guide.Metadata.Scope {
-				return fmt.Errorf("guide '%s' (scope: '%s') has prerequisite '%s' with mismatched scope: '%s'. Horizontal edges must have exactly identical scope",
-					guide.ID, guide.Metadata.Scope, prereqID, prereq.Metadata.Scope)
-			}
-		}
-
-		var allRanges [][2]int
-
-		// Validate SubGuides
-		for _, subRelation := range guide.Metadata.SubGuides {
-			if subRelation.Guide == "" {
-				return fmt.Errorf("guide '%s' has an empty guide reference in its subguides", guide.ID)
-			}
-			if subRelation.Clarity == "" {
-				return fmt.Errorf("guide '%s' is missing clarity for subguide '%s'", guide.ID, subRelation.Guide)
-			}
-			if subRelation.Segment == "" {
-				return fmt.Errorf("guide '%s' is missing segment for subguide '%s'", guide.ID, subRelation.Guide)
-			}
-
-			subID := subRelation.Guide
-			sub, exists := guides[subID]
-			if !exists {
-				return fmt.Errorf("guide '%s' references unknown sub_guide: '%s'", guide.ID, subID)
-			}
-
-			if !isValidClarity(subRelation.Clarity, config) {
-				return fmt.Errorf("guide '%s' has invalid subguide clarity: '%s' for subguide '%s'", guide.ID, subRelation.Clarity, subID)
-			}
-
-			ranges, err := parseSegments(subRelation.Segment)
-			if err != nil {
-				return fmt.Errorf("guide '%s' has invalid segment for subguide '%s': %w", guide.ID, subID, err)
-			}
-			allRanges = append(allRanges, ranges...)
-
-			subScopeVal := getScopeValue(sub.Metadata.Scope, config)
-
-			if subScopeVal >= guideScopeVal {
-				return fmt.Errorf("guide '%s' (scope: '%s') has sub_guide '%s' with invalid scope: '%s'. Sub-guides must have a strictly smaller scope",
-					guide.ID, guide.Metadata.Scope, subID, sub.Metadata.Scope)
-			}
-
-			if !config.RelaxedSubguides && guideScopeVal-subScopeVal != 1 {
-				return fmt.Errorf("guide '%s' (scope: '%s') has sub_guide '%s' with scope: '%s', but relaxed_subguides is false. Sub-guides must be exactly one scope level below their parent",
-					guide.ID, guide.Metadata.Scope, subID, sub.Metadata.Scope)
-			}
-		}
-
-		// Sort and check overlaps
-		slices.SortFunc(allRanges, func(a, b [2]int) int {
-			if a[0] == b[0] {
-				return a[1] - b[1]
-			}
-			return a[0] - b[0]
-		})
-
-		for i := 1; i < len(allRanges); i++ {
-			if allRanges[i][0] <= allRanges[i-1][1] {
-				return fmt.Errorf("guide '%s' has overlapping subguide segments: %v and %v", guide.ID, allRanges[i-1], allRanges[i])
-			}
-		}
-
-		if config.StrictCoverage && len(guide.Metadata.SubGuides) > 0 {
-			if len(allRanges) == 0 {
-				return fmt.Errorf("guide '%s' has strict_coverage enabled but no segments defined", guide.ID)
-			}
-			if allRanges[0][0] > 1 {
-				return fmt.Errorf("guide '%s' is missing coverage for lines 1 to %d", guide.ID, allRanges[0][0]-1)
-			}
-			for i := 1; i < len(allRanges); i++ {
-				if allRanges[i][0] > allRanges[i-1][1]+1 {
-					return fmt.Errorf("guide '%s' is missing coverage for lines %d to %d", guide.ID, allRanges[i-1][1]+1, allRanges[i][0]-1)
-				}
-			}
-			if allRanges[len(allRanges)-1][1] < guide.LineCount {
-				return fmt.Errorf("guide '%s' is missing coverage for lines %d to %d", guide.ID, allRanges[len(allRanges)-1][1]+1, guide.LineCount)
-			}
+		if prereq.Metadata.Scope != guide.Metadata.Scope {
+			return fmt.Errorf("guide '%s' (scope: '%s') has prerequisite '%s' with mismatched scope: '%s'. Horizontal edges must have exactly identical scope",
+				guide.ID, guide.Metadata.Scope, prereqID, prereq.Metadata.Scope)
 		}
 	}
-	return CheckAcyclic(guides)
+	return nil
+}
+
+func validateSubGuides(guide Guide, guides map[string]Guide, config Manifest, guideScopeVal int) ([][2]int, error) {
+	var allRanges [][2]int
+
+	for _, subRelation := range guide.Metadata.SubGuides {
+		if subRelation.Guide == "" {
+			return nil, fmt.Errorf("guide '%s' has an empty guide reference in its subguides", guide.ID)
+		}
+		if subRelation.Clarity == "" {
+			return nil, fmt.Errorf("guide '%s' is missing clarity for subguide '%s'", guide.ID, subRelation.Guide)
+		}
+		if subRelation.Segment == "" {
+			return nil, fmt.Errorf("guide '%s' is missing segment for subguide '%s'", guide.ID, subRelation.Guide)
+		}
+
+		subID := subRelation.Guide
+		sub, exists := guides[subID]
+		if !exists {
+			return nil, fmt.Errorf("guide '%s' references unknown sub_guide: '%s'", guide.ID, subID)
+		}
+
+		if !isValidClarity(subRelation.Clarity, config) {
+			return nil, fmt.Errorf("guide '%s' has invalid subguide clarity: '%s' for subguide '%s'", guide.ID, subRelation.Clarity, subID)
+		}
+
+		ranges, err := parseSegments(subRelation.Segment)
+		if err != nil {
+			return nil, fmt.Errorf("guide '%s' has invalid segment for subguide '%s': %w", guide.ID, subID, err)
+		}
+		allRanges = append(allRanges, ranges...)
+
+		subScopeVal := getScopeValue(sub.Metadata.Scope, config)
+
+		if subScopeVal >= guideScopeVal {
+			return nil, fmt.Errorf("guide '%s' (scope: '%s') has sub_guide '%s' with invalid scope: '%s'. Sub-guides must have a strictly smaller scope",
+				guide.ID, guide.Metadata.Scope, subID, sub.Metadata.Scope)
+		}
+
+		if !config.RelaxedSubguides && guideScopeVal-subScopeVal != 1 {
+			return nil, fmt.Errorf("guide '%s' (scope: '%s') has sub_guide '%s' with scope: '%s', but relaxed_subguides is false. Sub-guides must be exactly one scope level below their parent",
+				guide.ID, guide.Metadata.Scope, subID, sub.Metadata.Scope)
+		}
+	}
+	return allRanges, nil
+}
+
+func validateCoverage(guide Guide, allRanges [][2]int, config Manifest) error {
+	// Sort and check overlaps
+	slices.SortFunc(allRanges, func(a, b [2]int) int {
+		if a[0] == b[0] {
+			return a[1] - b[1]
+		}
+		return a[0] - b[0]
+	})
+
+	for i := 1; i < len(allRanges); i++ {
+		if allRanges[i][0] <= allRanges[i-1][1] {
+			return fmt.Errorf("guide '%s' has overlapping subguide segments: %v and %v", guide.ID, allRanges[i-1], allRanges[i])
+		}
+	}
+
+	if config.StrictCoverage && len(guide.Metadata.SubGuides) > 0 {
+		if len(allRanges) == 0 {
+			return fmt.Errorf("guide '%s' has strict_coverage enabled but no segments defined", guide.ID)
+		}
+		if allRanges[0][0] > 1 {
+			return fmt.Errorf("guide '%s' is missing coverage for lines 1 to %d", guide.ID, allRanges[0][0]-1)
+		}
+		for i := 1; i < len(allRanges); i++ {
+			if allRanges[i][0] > allRanges[i-1][1]+1 {
+				return fmt.Errorf("guide '%s' is missing coverage for lines %d to %d", guide.ID, allRanges[i-1][1]+1, allRanges[i][0]-1)
+			}
+		}
+		if allRanges[len(allRanges)-1][1] < guide.LineCount {
+			return fmt.Errorf("guide '%s' is missing coverage for lines %d to %d", guide.ID, allRanges[len(allRanges)-1][1]+1, guide.LineCount)
+		}
+	}
+	return nil
 }
