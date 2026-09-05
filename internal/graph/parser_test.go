@@ -57,11 +57,11 @@ No frontmatter at all.
 		t.Error("ParseGraph() expected error due to invalid files, got nil")
 	}
 
-	// Test parseGuide directly for individual behaviors
+	// Test ParseGuide directly for individual behaviors
 	t.Run("valid guide", func(t *testing.T) {
-		g, err := parseGuide(filepath.Join(tempDir, "valid.md"))
+		g, err := ParseGuide(filepath.Join(tempDir, "valid.md"))
 		if err != nil {
-			t.Fatalf("parseGuide() unexpected error: %v", err)
+			t.Fatalf("ParseGuide() unexpected error: %v", err)
 		}
 		if g.ID != "valid" {
 			t.Errorf("expected ID 'valid', got '%s'", g.ID)
@@ -78,16 +78,16 @@ No frontmatter at all.
 	})
 
 	t.Run("invalid yaml", func(t *testing.T) {
-		_, err := parseGuide(filepath.Join(tempDir, "invalid_yaml.md"))
+		_, err := ParseGuide(filepath.Join(tempDir, "invalid_yaml.md"))
 		if err == nil {
-			t.Error("parseGuide() expected error for invalid yaml, got nil")
+			t.Error("ParseGuide() expected error for invalid yaml, got nil")
 		}
 	})
 
 	t.Run("no frontmatter", func(t *testing.T) {
-		_, err := parseGuide(filepath.Join(tempDir, "no_frontmatter.md"))
+		_, err := ParseGuide(filepath.Join(tempDir, "no_frontmatter.md"))
 		if err == nil {
-			t.Error("parseGuide() expected error for no frontmatter, got nil")
+			t.Error("ParseGuide() expected error for no frontmatter, got nil")
 		}
 	})
 }

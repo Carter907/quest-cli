@@ -27,7 +27,7 @@ func ParseGraph(dirPath string) (map[string]Guide, error) {
 		}
 
 		path := filepath.Join(dirPath, entry.Name())
-		guide, err := parseGuide(path)
+		guide, err := ParseGuide(path)
 		if err != nil {
 			return nil, fmt.Errorf("failed to parse %s: %w", path, err)
 		}
@@ -38,7 +38,7 @@ func ParseGraph(dirPath string) (map[string]Guide, error) {
 	return guides, nil
 }
 
-func parseGuide(path string) (Guide, error) {
+func ParseGuide(path string) (Guide, error) {
 	baseName := filepath.Base(path)
 	id := strings.TrimSuffix(baseName, filepath.Ext(baseName))
 

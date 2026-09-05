@@ -45,6 +45,12 @@ qst add "Understanding Exponents" --scope lesson --clarity introductory --tags m
 
 This command creates a markdown file with populated front-matter. You can also specify prerequisites and sub-guides if you already know the structure you're going for.
 
+If you want to link an existing guide or sub-guide later on, you can use the `qst link` command:
+
+```sh
+qst link "Understanding Exponents" --guide "Powers" --clarity detailed --segment 1-5
+```
+
 ### 3. Validate the structure
 
 As you create more and more guides and start to draft out a presentable network of guides, you want to make sure the graph is valid under the constraints:
