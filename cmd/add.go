@@ -36,13 +36,13 @@ qst add Exponent --scope definition --clarity strict`,
 			fmt.Printf("Error: %s already exists\n", filename)
 			os.Exit(1)
 		}
-		if interactive {
-			config, err := graph.ParseConfig(".")
-			if err != nil {
-				fmt.Printf("Failed to load manifest.yaml config: %v\n", err)
-				os.Exit(1)
-			}
+		config, err := graph.ParseConfig(".")
+		if err != nil {
+			fmt.Printf("Failed to load manifest.yaml config: %v\n", err)
+			os.Exit(1)
+		}
 
+		if interactive {
 			prereqString := ""
 			subguideString := ""
 			tagsString := ""
@@ -126,6 +126,34 @@ qst add Exponent --scope definition --clarity strict`,
 			}
 			if !cmd.Flags().Changed("tags") {
 				addTags = parseCSV(tagsString)
+			}
+		} else {
+			if cmd.Flags().Changed("scope") {
+				validScope := false
+				for _, s := range config.Scopes {
+					if addScope == s {
+						validScope = true
+						break
+					}
+				}
+				if !validScope {
+					fmt.Printf("Error: invalid scope '%s'. Valid scopes are: %v\n", addScope, config.Scopes)
+					os.Exit(1)
+				}
+			}
+
+			if cmd.Flags().Changed("clarity") {
+				validClarity := false
+				for _, c := range config.Clarities {
+					if addClarity == c {
+						validClarity = true
+						break
+					}
+				}
+				if !validClarity {
+					fmt.Printf("Error: invalid clarity '%s'. Valid clarities are: %v\n", addClarity, config.Clarities)
+					os.Exit(1)
+				}
 			}
 		}
 
