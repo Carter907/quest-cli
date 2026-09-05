@@ -2,7 +2,7 @@
 
 Quest is a command-line tool for storing and structuring knowledge. You use markdown files to explain a certain idea or practice. These files are related to each other through a directed acyclic graph. This tool helps you manipulate, verify, and package this structured material into a single file format.
 
-These files can be distributed and unpacked in markdown editors like Obsidian. Integration with this tool in your workflow is made easy through is simple yet comprehensive command-line interface.
+These files can be distributed and unpacked in markdown editors like Obsidian. Integration with this tool in your workflow is made easy through its simple yet comprehensive command-line interface.
 
 
 ## Why Quest?
@@ -41,7 +41,7 @@ qst --help
 
 ## Usage
 
-For a basic usage example of the commend, please read [usage.md](/docs/usage.md)
+For a basic usage example of the command, please read [usage.md](/docs/usage.md)
 
 ## Concepts
 

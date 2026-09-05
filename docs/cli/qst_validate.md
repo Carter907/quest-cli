@@ -1,10 +1,10 @@
 ## qst validate
 
-Validate that the knowledge directory
+Validate the knowledge directory
 
 ### Synopsis
 
-Validate is useful for checking if your knowledge directory correctly adheres to the formatting and structural constriants.
+Validate is useful for checking if your knowledge directory correctly adheres to the formatting and structural constraints.
 
 ```
 qst validate [directory] [flags]

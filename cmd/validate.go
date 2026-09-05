@@ -11,8 +11,8 @@ import (
 
 var validateCmd = &cobra.Command{
 	Use:   "validate [directory]",
-	Short: "Validate that the knowledge directory",
-	Long:  `Validate is useful for checking if your knowledge directory correctly adheres to the formatting and structural constriants.`,
+	Short: "Validate the knowledge directory",
+	Long:  `Validate is useful for checking if your knowledge directory correctly adheres to the formatting and structural constraints.`,
 	Example: `# Validate Current Dir
 qst validate
 

@@ -4,7 +4,7 @@ Add a new guide to the knowledge graph.
 
 ### Synopsis
 
-Add allows you to insert a guide into the knowledge graph by specifying it's prerequisites, subguides, scope, and clarity. A new markdown file will be inserted into the directory
+Add allows you to insert a guide into the knowledge graph by specifying its prerequisites, subguides, scope, and clarity. A new markdown file will be inserted into the directory
 
 ```
 qst add [name] [flags]

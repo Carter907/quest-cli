@@ -23,7 +23,7 @@ var (
 var addCmd = &cobra.Command{
 	Use:   "add [name]",
 	Short: "Add a new guide to the knowledge graph.",
-	Long:  "Add allows you to insert a guide into the knowledge graph by specifying it's prerequisites, subguides, scope, and clarity. A new markdown file will be inserted into the directory",
+	Long:  "Add allows you to insert a guide into the knowledge graph by specifying its prerequisites, subguides, scope, and clarity. A new markdown file will be inserted into the directory",
 	Example: `# Add a new definition
 # missing value flags correspond to empty properties
 qst add Exponent --scope definition --clarity strict`,
