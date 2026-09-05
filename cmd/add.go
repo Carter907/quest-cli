@@ -3,6 +3,7 @@ package cmd
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"strings"
 
 	"charm.land/huh/v2"
@@ -13,6 +14,7 @@ import (
 
 var (
 	interactive      bool
+	addDir           string
 	addPrerequisites []string
 	addSubGuides     []string
 	addScope         string
@@ -23,20 +25,22 @@ var (
 var addCmd = &cobra.Command{
 	Use:   "add [name]",
 	Short: "Add a new guide to the knowledge graph.",
-	Long:  "Add allows you to insert a guide into the knowledge graph by specifying its prerequisites, subguides, scope, and clarity. A new markdown file will be inserted into the directory",
+	Long:  "Add allows you to insert a guide into the knowledge graph by specifying its prerequisites, subguides, scope, and clarity. A new markdown file will be inserted into the target directory.",
 	Example: `# Add a new definition
-# missing value flags correspond to empty properties
-qst add Exponent --scope definition --clarity strict`,
+qst add Exponent --scope definition --clarity strict
+
+# Add to a specific directory
+qst add Exponent --dir my_graph/`,
 	Args: cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		name := args[0]
-		filename := name + ".md"
+		filename := filepath.Join(addDir, name+".md")
 
 		if _, err := os.Stat(filename); !os.IsNotExist(err) {
 			fmt.Printf("Error: %s already exists\n", filename)
 			os.Exit(1)
 		}
-		config, err := graph.ParseConfig(".")
+		config, err := graph.ParseConfig(addDir)
 		if err != nil {
 			fmt.Printf("Failed to load manifest.yaml config: %v\n", err)
 			os.Exit(1)
@@ -202,6 +206,7 @@ qst add Exponent --scope definition --clarity strict`,
 
 func init() {
 	addCmd.Flags().BoolVarP(&interactive, "interactive", "i", false, "Interactive mode")
+	addCmd.Flags().StringVarP(&addDir, "dir", "d", ".", "Knowledge graph directory")
 	addCmd.Flags().StringSliceVar(&addPrerequisites, "prerequisites", nil, "List of prerequisites")
 	addCmd.Flags().StringSliceVar(&addSubGuides, "subguides", nil, "List of subguides")
 	addCmd.Flags().StringVar(&addScope, "scope", "", "Scope of the guide (e.g. definition, description)")
