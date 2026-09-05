@@ -63,8 +63,8 @@ func parseSegments(segmentStr string) ([][2]int, error) {
 		return nil, nil
 	}
 	var ranges [][2]int
-	parts := strings.Split(segmentStr, ",")
-	for _, p := range parts {
+	parts := strings.SplitSeq(segmentStr, ",")
+	for p := range parts {
 		p = strings.TrimSpace(p)
 		bounds := strings.Split(p, "-")
 		if len(bounds) != 2 {
