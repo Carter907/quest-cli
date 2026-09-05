@@ -2,9 +2,11 @@ package graph
 
 import (
 	"archive/zip"
+	"fmt"
 	"io"
 	"os"
 	"path/filepath"
+	"strings"
 )
 
 // ArchiveGraph packages all the markdown guides into a .kng zip archive.
@@ -71,6 +73,9 @@ func UnarchiveGraph(inputPath string, destDir string) error {
 		}
 
 		outPath := filepath.Join(destDir, f.Name)
+		if !strings.HasPrefix(outPath, filepath.Clean(destDir)+string(os.PathSeparator)) {
+			return fmt.Errorf("illegal file path: %s", outPath)
+		}
 
 		dst, err := os.Create(outPath)
 		if err != nil {

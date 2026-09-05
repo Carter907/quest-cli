@@ -47,7 +47,8 @@ func parseGuide(path string) (Guide, error) {
 		return Guide{}, err
 	}
 
-	lines := strings.Split(string(content), "\n")
+	contentStr := strings.ReplaceAll(string(content), "\r\n", "\n")
+	lines := strings.Split(contentStr, "\n")
 	var frontmatterLines []string
 	inFrontmatter := false
 	frontMatterEnd := 0
@@ -119,7 +120,13 @@ func UpdateGuideMetadata(path string, meta GuideMetadata) error {
 		return err
 	}
 
-	lines := strings.Split(string(content), "\n")
+	newline := "\n"
+	if strings.Contains(string(content), "\r\n") {
+		newline = "\r\n"
+	}
+
+	contentStr := strings.ReplaceAll(string(content), "\r\n", "\n")
+	lines := strings.Split(contentStr, "\n")
 	inFrontmatter := false
 	frontMatterStart := -1
 	frontMatterEnd := -1
@@ -167,5 +174,5 @@ func UpdateGuideMetadata(path string, meta GuideMetadata) error {
 
 	newLines = append(newLines, lines[frontMatterEnd:]...)
 
-	return os.WriteFile(path, []byte(strings.Join(newLines, "\n")), 0644)
+	return os.WriteFile(path, []byte(strings.Join(newLines, newline)), 0644)
 }
