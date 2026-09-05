@@ -24,22 +24,19 @@ By offloading validation of content to a concrete system, you can focus on compr
 go install github.com/Carter907/quest-cli@latest
 ```
 
-**Install locally using `go build`**:
+> [!NOTE]
+> `go install` installs the executable as `quest-cli` (or `quest-cli.exe` on Windows) into `$GOPATH/bin`. You can run `quest-cli` directly or alias/rename it to `qst`.
 
-```sh
-git clone https://github.com/Carter907/quest-cli.git
-cd quest-cli
-go build -o $(go env GOPATH)/bin/qst .
-```
+Visit [installation.md](/docs/installation.md) for more details.
+
+
+## Usage
 
 **Running `qst`**:
 
 ```sh
 qst --help
 ```
-
-
-## Usage
 
 For a basic usage example of the command, please read [usage.md](/docs/usage.md)
 
