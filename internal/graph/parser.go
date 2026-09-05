@@ -111,3 +111,61 @@ func ParseConfig(dirPath string) (Manifest, error) {
 
 	return config, nil
 }
+
+// UpdateGuideMetadata replaces the YAML frontmatter in the given file while preserving the rest of its content.
+func UpdateGuideMetadata(path string, meta GuideMetadata) error {
+	content, err := os.ReadFile(path)
+	if err != nil {
+		return err
+	}
+
+	lines := strings.Split(string(content), "\n")
+	inFrontmatter := false
+	frontMatterStart := -1
+	frontMatterEnd := -1
+
+	for i, line := range lines {
+		trim := strings.TrimSpace(line)
+		if trim == "---" {
+			if !inFrontmatter {
+				inFrontmatter = true
+				frontMatterStart = i
+			} else {
+				frontMatterEnd = i
+				break
+			}
+		}
+	}
+
+	if frontMatterStart == -1 || frontMatterEnd == -1 {
+		return fmt.Errorf("invalid or missing YAML frontmatter in %s", path)
+	}
+
+	// Ensure nil slices serialize to empty arrays [] in yaml instead of null
+	if meta.Prerequisites == nil {
+		meta.Prerequisites = []string{}
+	}
+	if meta.SubGuides == nil {
+		meta.SubGuides = []SubGuideRelation{}
+	}
+	if meta.Tags == nil {
+		meta.Tags = []string{}
+	}
+
+	metaBytes, err := yaml.Marshal(&meta)
+	if err != nil {
+		return fmt.Errorf("failed to marshal metadata: %w", err)
+	}
+
+	var newLines []string
+	newLines = append(newLines, lines[:frontMatterStart+1]...)
+
+	metaStr := strings.TrimRight(string(metaBytes), "\n")
+	if metaStr != "" {
+		newLines = append(newLines, strings.Split(metaStr, "\n")...)
+	}
+
+	newLines = append(newLines, lines[frontMatterEnd:]...)
+
+	return os.WriteFile(path, []byte(strings.Join(newLines, "\n")), 0644)
+}
