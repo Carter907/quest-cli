@@ -1,9 +1,8 @@
 ---
 prerequisites: []
 sub_guides:
-- {guide: Variable, clarity: '', segment: ''}
-- {guide: Assignment, clarity: '', segment: ''}
-clarity: detailed
+- {guide: Variable, adherence: '', segment: ''}
+- {guide: Assignment, adherence: '', segment: ''}
 scope: description
 tags: [c, variables]
 ---

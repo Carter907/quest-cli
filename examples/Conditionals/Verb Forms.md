@@ -2,21 +2,20 @@
 prerequisites: []
 sub_guides:
     - guide: Present Simple
-      clarity: ""
+      adherence: ""
       segment: ""
     - guide: Past Simple
-      clarity: ""
+      adherence: ""
       segment: ""
     - guide: Past Participle
-      clarity: ""
+      adherence: ""
       segment: ""
     - guide: Past Perfect
-      clarity: ""
+      adherence: ""
       segment: ""
     - guide: Modal Verbs
-      clarity: ""
+      adherence: ""
       segment: ""
-clarity: detailed
 scope: explanation
 tags:
     - grammar

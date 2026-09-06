@@ -5,7 +5,6 @@ prerequisites:
     - Logical OR
     - Negation
 sub_guides: []
-clarity: detailed
 scope: explanation
 tags:
     - logic

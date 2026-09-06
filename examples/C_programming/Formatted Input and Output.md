@@ -1,9 +1,8 @@
 ---
 prerequisites: [Writing a Simple C Program]
 sub_guides:
-- {guide: Printf Function, clarity: '', segment: ''}
-- {guide: Scanf Function, clarity: '', segment: ''}
-clarity: detailed
+- {guide: Printf Function, adherence: '', segment: ''}
+- {guide: Scanf Function, adherence: '', segment: ''}
 scope: explanation
 tags: [c, io]
 ---

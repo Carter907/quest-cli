@@ -11,7 +11,6 @@ import (
 var (
 	listDir     string
 	listScope   string
-	listClarity string
 	listTags    []string
 )
 
@@ -31,9 +30,6 @@ var listCmd = &cobra.Command{
 
 		for id, guide := range guides {
 			if listScope != "" && guide.Metadata.Scope != listScope {
-				continue
-			}
-			if listClarity != "" && guide.Metadata.Clarity != listClarity {
 				continue
 			}
 			if len(listTags) > 0 {
@@ -61,7 +57,6 @@ var listCmd = &cobra.Command{
 func init() {
 	listCmd.Flags().StringVarP(&listDir, "dir", "d", ".", "Knowledge graph directory")
 	listCmd.Flags().StringVar(&listScope, "scope", "", "Filter by scope")
-	listCmd.Flags().StringVar(&listClarity, "clarity", "", "Filter by clarity")
 	listCmd.Flags().StringSliceVar(&listTags, "tags", nil, "Filter by tags (comma separated)")
 
 	rootCmd.AddCommand(listCmd)

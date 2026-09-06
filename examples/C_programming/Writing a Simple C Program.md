@@ -1,9 +1,8 @@
 ---
 prerequisites: [Building C Programs]
 sub_guides:
-- {guide: C Comments, clarity: '', segment: ''}
-- {guide: Variables and Assignment, clarity: '', segment: ''}
-clarity: detailed
+- {guide: C Comments, adherence: '', segment: ''}
+- {guide: Variables and Assignment, adherence: '', segment: ''}
 scope: explanation
 tags: [c, fundamentals]
 ---

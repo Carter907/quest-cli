@@ -1,8 +1,7 @@
 ---
 prerequisites: []
 sub_guides:
-- {guide: Comment, clarity: '', segment: ''}
-clarity: detailed
+- {guide: Comment, adherence: '', segment: ''}
 scope: description
 tags: [c, syntax]
 ---

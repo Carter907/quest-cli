@@ -39,7 +39,6 @@ qst new --starter`,
 				starterContent := `---
 prerequisites: []
 sub_guides: []
-clarity: strict
 scope: definition
 tags: ["example"]
 ---
@@ -67,7 +66,7 @@ scopes:
   - description
   - explanation
   - lesson
-clarities:
+adherences:
   - strict
   - detailed
   - introductory

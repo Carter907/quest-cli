@@ -1,9 +1,8 @@
 ---
 prerequisites: [Printf Function]
 sub_guides:
-- {guide: Scanf, clarity: '', segment: ''}
-- {guide: Format Specifier, clarity: '', segment: ''}
-clarity: detailed
+- {guide: Scanf, adherence: '', segment: ''}
+- {guide: Format Specifier, adherence: '', segment: ''}
 scope: description
 tags: [c, io]
 ---

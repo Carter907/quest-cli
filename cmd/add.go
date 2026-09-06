@@ -17,16 +17,15 @@ var (
 	addDir           string
 	addPrerequisites []string
 	addScope         string
-	addClarity       string
 	addTags          []string
 )
 
 var addCmd = &cobra.Command{
 	Use:   "add [name]",
 	Short: "Add a new guide to the knowledge graph.",
-	Long:  "Add allows you to insert a guide into the knowledge graph by specifying its prerequisites, scope, and clarity. A new markdown file will be inserted into the target directory.",
+	Long:  "Add allows you to insert a guide into the knowledge graph by specifying its prerequisites, and scope. A new markdown file will be inserted into the target directory.",
 	Example: `# Add a new definition
-qst add Exponent --scope definition --clarity strict
+qst add Exponent --scope definition
 
 # Add to a specific directory
 qst add Exponent --dir my_graph/`,
@@ -59,17 +58,6 @@ qst add Exponent --dir my_graph/`,
 					Title("Choose your Scope").
 					Options(scopeOptions...).
 					Value(&addScope))
-			}
-
-			if !cmd.Flags().Changed("clarity") {
-				var clarityOptions []huh.Option[string]
-				for _, c := range config.Clarities {
-					clarityOptions = append(clarityOptions, huh.NewOption(c, c))
-				}
-				fields = append(fields, huh.NewSelect[string]().
-					Title("Choose a clarity").
-					Options(clarityOptions...).
-					Value(&addClarity))
 			}
 
 			if !cmd.Flags().Changed("prerequisites") {
@@ -134,25 +122,12 @@ qst add Exponent --dir my_graph/`,
 				}
 			}
 
-			if cmd.Flags().Changed("clarity") {
-				validClarity := false
-				for _, c := range config.Clarities {
-					if addClarity == c {
-						validClarity = true
-						break
-					}
-				}
-				if !validClarity {
-					fmt.Printf("Error: invalid clarity '%s'. Valid clarities are: %v\n", addClarity, config.Clarities)
-					os.Exit(1)
-				}
-			}
+
 		}
 
 		meta := graph.GuideMetadata{
 			Prerequisites: addPrerequisites,
 			Scope:         addScope,
-			Clarity:       addClarity,
 			Tags:          addTags,
 		}
 		// Ensure nil slices serialize to empty arrays [] in yaml instead of null
@@ -189,7 +164,6 @@ func init() {
 	addCmd.Flags().StringVarP(&addDir, "dir", "d", ".", "Knowledge graph directory")
 	addCmd.Flags().StringSliceVar(&addPrerequisites, "prerequisites", nil, "List of prerequisites")
 	addCmd.Flags().StringVar(&addScope, "scope", "", "Scope of the guide (e.g. definition, description)")
-	addCmd.Flags().StringVar(&addClarity, "clarity", "", "Clarity of the guide (e.g. strict, vague)")
 	addCmd.Flags().StringSliceVar(&addTags, "tags", nil, "List of tags")
 
 	rootCmd.AddCommand(addCmd)

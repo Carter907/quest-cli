@@ -2,7 +2,6 @@
 prerequisites:
     - Truth Tables
 sub_guides: []
-clarity: detailed
 scope: explanation
 tags:
     - logic

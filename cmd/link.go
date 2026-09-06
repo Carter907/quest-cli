@@ -14,14 +14,14 @@ var (
 	linkInteractive bool
 	linkDir         string
 	linkGuide       string
-	linkClarity     string
+	linkAdherence     string
 	linkSegment     string
 )
 
 var linkCmd = &cobra.Command{
 	Use:   "link [parent-guide]",
 	Short: "Link a subguide to an existing guide.",
-	Long:  "Modifies an existing parent guide's frontmatter to add a new subguide relation with clarity and segment.",
+	Long:  "Modifies an existing parent guide's frontmatter to add a new subguide relation with adherence and segment.",
 	Args:  cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		parentName := args[0]
@@ -48,15 +48,15 @@ var linkCmd = &cobra.Command{
 					Value(&linkGuide))
 			}
 
-			if !cmd.Flags().Changed("clarity") {
-				var clarityOptions []huh.Option[string]
-				for _, c := range config.Clarities {
-					clarityOptions = append(clarityOptions, huh.NewOption(c, c))
+			if !cmd.Flags().Changed("adherence") {
+				var adherenceOptions []huh.Option[string]
+				for _, c := range config.Adherences {
+					adherenceOptions = append(adherenceOptions, huh.NewOption(c, c))
 				}
 				fields = append(fields, huh.NewSelect[string]().
-					Title("Choose a clarity").
-					Options(clarityOptions...).
-					Value(&linkClarity))
+					Title("Choose a adherence").
+					Options(adherenceOptions...).
+					Value(&linkAdherence))
 			}
 
 			if !cmd.Flags().Changed("segment") {
@@ -76,16 +76,16 @@ var linkCmd = &cobra.Command{
 				}
 			}
 		} else {
-			if cmd.Flags().Changed("clarity") {
-				validClarity := false
-				for _, c := range config.Clarities {
-					if linkClarity == c {
-						validClarity = true
+			if cmd.Flags().Changed("adherence") {
+				validAdherence := false
+				for _, c := range config.Adherences {
+					if linkAdherence == c {
+						validAdherence = true
 						break
 					}
 				}
-				if !validClarity {
-					fmt.Printf("Error: invalid clarity '%s'. Valid clarities are: %v\n", linkClarity, config.Clarities)
+				if !validAdherence {
+					fmt.Printf("Error: invalid adherence '%s'. Valid clarities are: %v\n", linkAdherence, config.Adherences)
 					os.Exit(1)
 				}
 			}
@@ -105,7 +105,7 @@ var linkCmd = &cobra.Command{
 		// Append the new subguide
 		newSubguide := graph.SubGuideRelation{
 			Guide:   linkGuide,
-			Clarity: linkClarity,
+			Adherence: linkAdherence,
 			Segment: linkSegment,
 		}
 		parentGuide.Metadata.SubGuides = append(parentGuide.Metadata.SubGuides, newSubguide)
@@ -124,7 +124,7 @@ func init() {
 	linkCmd.Flags().BoolVarP(&linkInteractive, "interactive", "i", false, "Interactive mode")
 	linkCmd.Flags().StringVarP(&linkDir, "dir", "d", ".", "Knowledge graph directory")
 	linkCmd.Flags().StringVar(&linkGuide, "guide", "", "Name of the subguide to link")
-	linkCmd.Flags().StringVar(&linkClarity, "clarity", "", "Clarity of the subguide relation")
+	linkCmd.Flags().StringVar(&linkAdherence, "adherence", "", "Adherence of the subguide relation")
 	linkCmd.Flags().StringVar(&linkSegment, "segment", "", "Segment of the subguide relation")
 
 	rootCmd.AddCommand(linkCmd)

@@ -2,7 +2,6 @@
 prerequisites:
     - Dependent Clauses
 sub_guides: []
-clarity: detailed
 scope: explanation
 tags:
     - grammar

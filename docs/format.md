@@ -14,13 +14,13 @@ These guides require a YAML frontmatter that carries their metadata. When format
 - `prerequisites` - A list of required guides. **Strict Rule:** Horizontal edges in the knowledge graph can *only* exist between guides of the exact identical `scope` (horizontal relationship).
 - `sub_guides` - An optional list of sub-guide relation objects. **Strict Rule:** These must be exactly one scope level smaller than the current guide, unless `relaxed_subguides: true` is set in the `manifest.yaml` which allows any smaller scope. Each object must contain:
   - `guide`: The name of the sub-guide being referenced.
-  - `clarity`: The specific clarity constraint applied to this sub-guide reference.
+  - `adherence`: The specific constraint applied to this sub-guide reference, dictating exactly how the sub-guide must be tangibly represented and rewritten inside the body text (checked against the `adherences` list in `manifest.yaml`). Common examples:
+    - **strict**: The author must explicitly use the exact or near-exact content of the sub-guide within the text.
+    - **detailed**: The author must explicitly write closely summarized versions of the sub-guide within the text.
+    - **introductory**: The author only needs to generalize the sub-guide, pointing to the concept without exact reproduction.
+    - **vague**: The author may reference the sub-guide loosely, with the least exact reproduction of content.
   - `segment`: The line range(s) in the current guide's text that cover this sub-guide (e.g., "10-20, 25-30").
-- `clarity` - This is a **functional text constraint**, not just a label. It exists as both a top-level property and within each `sub_guides` object. It dictates exactly how the sub-guides must be tangibly represented and rewritten inside the body text. Common examples:
-  - **strict**: The author must explicitly use the exact or near-exact content of the sub-guides within the text.
-  - **detailed**: The author must explicitly write closely summarized versions of the sub-guides within the text.
-  - **introductory**: The author only needs to generalize the sub-guides, pointing to the concept without exact reproduction.
-  - **vague**: The author may reference the sub-guides loosely, with the least exact reproduction of content.
+- `clarity` - A top-level descriptor detailing the overall style or functional text constraint of the current guide itself. (Checked against the `clarities` list in `manifest.yaml`).
 - `scope` - How much content is covered in a guide; how many concepts or things were explained. Scope is qualitative:
   - **definition**: Smallest scope (singular term). *Example: "Exponent"*
   - **description**: Smaller scope, but slightly larger than a definition, focusing heavily on providing examples and comparisons. *Example: "Graphs of Exponential Function"*

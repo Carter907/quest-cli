@@ -3,7 +3,6 @@ prerequisites:
     - If Clause
     - Main Clause
 sub_guides: []
-clarity: detailed
 scope: explanation
 tags:
     - grammar

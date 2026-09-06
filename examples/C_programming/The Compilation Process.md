@@ -1,9 +1,8 @@
 ---
 prerequisites: []
 sub_guides:
-- {guide: Compiler, clarity: '', segment: ''}
-- {guide: Source Code, clarity: '', segment: ''}
-clarity: detailed
+- {guide: Compiler, adherence: '', segment: ''}
+- {guide: Source Code, adherence: '', segment: ''}
 scope: description
 tags: [c, compilation]
 ---

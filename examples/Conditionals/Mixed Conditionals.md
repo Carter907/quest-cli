@@ -4,7 +4,6 @@ prerequisites:
     - Third Conditional
     - Verb Forms
 sub_guides: []
-clarity: detailed
 scope: explanation
 tags:
     - grammar

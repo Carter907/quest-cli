@@ -1,7 +1,6 @@
 ---
 prerequisites: []
 sub_guides: []
-clarity: detailed
 scope: description
 tags:
     - grammar

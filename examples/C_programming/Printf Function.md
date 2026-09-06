@@ -1,9 +1,8 @@
 ---
 prerequisites: []
 sub_guides:
-- {guide: Printf, clarity: '', segment: ''}
-- {guide: Format Specifier, clarity: '', segment: ''}
-clarity: detailed
+- {guide: Printf, adherence: '', segment: ''}
+- {guide: Format Specifier, adherence: '', segment: ''}
 scope: description
 tags: [c, io]
 ---

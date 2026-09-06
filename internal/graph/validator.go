@@ -96,8 +96,8 @@ func getScopeValue(scope string, config Manifest) int {
 	return 0
 }
 
-func isValidClarity(clarity string, config Manifest) bool {
-	return slices.Contains(config.Clarities, clarity)
+func isValidAdherence(adherence string, config Manifest) bool {
+	return slices.Contains(config.Adherences, adherence)
 }
 
 // ValidateGraph checks structural constraints of the knowledge graph
@@ -134,11 +134,6 @@ func validateGuide(guide Guide, guides map[string]Guide, config Manifest) error 
 	guideScopeVal := getScopeValue(guide.Metadata.Scope, config)
 	if guideScopeVal == 0 {
 		return fmt.Errorf("guide '%s' has invalid scope: '%s'", guide.ID, guide.Metadata.Scope)
-	}
-
-	// Validate Clarity
-	if !isValidClarity(guide.Metadata.Clarity, config) {
-		return fmt.Errorf("guide '%s' has invalid clarity: '%s'", guide.ID, guide.Metadata.Clarity)
 	}
 
 	// Check RequireSubguides for non-leaf scopes
@@ -179,8 +174,8 @@ func validateSubGuides(guide Guide, guides map[string]Guide, config Manifest, gu
 		if subRelation.Guide == "" {
 			return nil, fmt.Errorf("guide '%s' has an empty guide reference in its subguides", guide.ID)
 		}
-		if subRelation.Clarity == "" {
-			return nil, fmt.Errorf("guide '%s' is missing clarity for subguide '%s'", guide.ID, subRelation.Guide)
+		if subRelation.Adherence == "" {
+			return nil, fmt.Errorf("guide '%s' is missing adherence for subguide '%s'", guide.ID, subRelation.Guide)
 		}
 		if subRelation.Segment == "" {
 			return nil, fmt.Errorf("guide '%s' is missing segment for subguide '%s'", guide.ID, subRelation.Guide)
@@ -192,8 +187,8 @@ func validateSubGuides(guide Guide, guides map[string]Guide, config Manifest, gu
 			return nil, fmt.Errorf("guide '%s' references unknown sub_guide: '%s'", guide.ID, subID)
 		}
 
-		if !isValidClarity(subRelation.Clarity, config) {
-			return nil, fmt.Errorf("guide '%s' has invalid subguide clarity: '%s' for subguide '%s'", guide.ID, subRelation.Clarity, subID)
+		if !isValidAdherence(subRelation.Adherence, config) {
+			return nil, fmt.Errorf("guide '%s' has invalid subguide adherence: '%s' for subguide '%s'", guide.ID, subRelation.Adherence, subID)
 		}
 
 		ranges, err := parseSegments(subRelation.Segment)

@@ -3,7 +3,6 @@ prerequisites:
     - Conditionals
     - Verb Forms
 sub_guides: []
-clarity: detailed
 scope: explanation
 tags:
     - grammar

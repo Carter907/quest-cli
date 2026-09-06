@@ -6,8 +6,8 @@ import (
 
 func TestValidateGraph(t *testing.T) {
 	mockConfig := Manifest{
-		Scopes:    []string{"definition", "description", "explanation", "lesson"},
-		Clarities: []string{"vague", "introductory", "detailed", "strict"},
+		Scopes: []string{"definition", "description", "explanation", "lesson"},
+		Adherences: []string{"vague", "introductory", "detailed", "strict"},
 	}
 	tests := []struct {
 		name    string
@@ -20,8 +20,7 @@ func TestValidateGraph(t *testing.T) {
 				"guide1": {
 					ID:         "guide1",
 					HasContent: true, Metadata: GuideMetadata{
-						Scope:   "definition",
-						Clarity: "strict",
+						Scope: "definition",
 					},
 				},
 			},
@@ -33,21 +32,7 @@ func TestValidateGraph(t *testing.T) {
 				"guide1": {
 					ID:         "guide1",
 					HasContent: true, Metadata: GuideMetadata{
-						Scope:   "invalid_scope",
-						Clarity: "strict",
-					},
-				},
-			},
-			wantErr: true,
-		},
-		{
-			name: "invalid clarity",
-			guides: map[string]Guide{
-				"guide1": {
-					ID:         "guide1",
-					HasContent: true, Metadata: GuideMetadata{
-						Scope:   "definition",
-						Clarity: "invalid_clarity",
+						Scope: "invalid_scope",
 					},
 				},
 			},
@@ -60,15 +45,13 @@ func TestValidateGraph(t *testing.T) {
 					ID:         "guide1",
 					HasContent: true, Metadata: GuideMetadata{
 						Scope:         "lesson",
-						Clarity:       "detailed",
 						Prerequisites: []string{"guide2"},
 					},
 				},
 				"guide2": {
 					ID:         "guide2",
 					HasContent: true, Metadata: GuideMetadata{
-						Scope:   "lesson",
-						Clarity: "detailed",
+						Scope: "lesson",
 					},
 				},
 			},
@@ -81,7 +64,6 @@ func TestValidateGraph(t *testing.T) {
 					ID:         "guide1",
 					HasContent: true, Metadata: GuideMetadata{
 						Scope:         "lesson",
-						Clarity:       "detailed",
 						Prerequisites: []string{"unknown_guide"},
 					},
 				},
@@ -95,15 +77,13 @@ func TestValidateGraph(t *testing.T) {
 					ID:         "guide1",
 					HasContent: true, Metadata: GuideMetadata{
 						Scope:         "lesson",
-						Clarity:       "detailed",
 						Prerequisites: []string{"guide2"},
 					},
 				},
 				"guide2": {
 					ID:         "guide2",
 					HasContent: true, Metadata: GuideMetadata{
-						Scope:   "definition",
-						Clarity: "detailed",
+						Scope: "definition",
 					},
 				},
 			},
@@ -116,15 +96,13 @@ func TestValidateGraph(t *testing.T) {
 					ID:         "guide1",
 					HasContent: true, Metadata: GuideMetadata{
 						Scope:     "lesson",
-						Clarity:   "detailed",
-						SubGuides: []SubGuideRelation{{Guide: "guide2", Clarity: "detailed", Segment: "1-10"}},
+						SubGuides: []SubGuideRelation{{Guide: "guide2", Adherence: "detailed", Segment: "1-10"}},
 					},
 				},
 				"guide2": {
 					ID:         "guide2",
 					HasContent: true, Metadata: GuideMetadata{
-						Scope:   "explanation",
-						Clarity: "detailed",
+						Scope: "explanation",
 					},
 				},
 			},
@@ -137,7 +115,6 @@ func TestValidateGraph(t *testing.T) {
 					ID:         "guide1",
 					HasContent: true, Metadata: GuideMetadata{
 						Scope:     "lesson",
-						Clarity:   "detailed",
 						SubGuides: []SubGuideRelation{{Guide: "unknown_guide"}},
 					},
 				},
@@ -151,15 +128,13 @@ func TestValidateGraph(t *testing.T) {
 					ID:         "guide1",
 					HasContent: true, Metadata: GuideMetadata{
 						Scope:     "lesson", // 4
-						Clarity:   "detailed",
-						SubGuides: []SubGuideRelation{{Guide: "guide2", Clarity: "detailed", Segment: "1-10"}},
+						SubGuides: []SubGuideRelation{{Guide: "guide2", Adherence: "detailed", Segment: "1-10"}},
 					},
 				},
 				"guide2": {
 					ID:         "guide2",
 					HasContent: true, Metadata: GuideMetadata{
-						Scope:   "description", // 2 (differs by 2)
-						Clarity: "detailed",
+						Scope: "description", // 2 (differs by 2)
 					},
 				},
 			},
@@ -172,15 +147,13 @@ func TestValidateGraph(t *testing.T) {
 					ID:         "guide1",
 					HasContent: true, Metadata: GuideMetadata{
 						Scope:     "explanation",
-						Clarity:   "detailed",
-						SubGuides: []SubGuideRelation{{Guide: "guide2", Clarity: "detailed", Segment: "1-10"}},
+						SubGuides: []SubGuideRelation{{Guide: "guide2", Adherence: "detailed", Segment: "1-10"}},
 					},
 				},
 				"guide2": {
 					ID:         "guide2",
 					HasContent: true, Metadata: GuideMetadata{
-						Scope:   "lesson", // larger scope than Explanation
-						Clarity: "detailed",
+						Scope: "lesson", // larger scope than Explanation
 					},
 				},
 			},
@@ -193,7 +166,6 @@ func TestValidateGraph(t *testing.T) {
 					ID:         "guide1",
 					HasContent: true, Metadata: GuideMetadata{
 						Scope:         "lesson",
-						Clarity:       "detailed",
 						Prerequisites: []string{"guide2"},
 					},
 				},
@@ -201,7 +173,6 @@ func TestValidateGraph(t *testing.T) {
 					ID:         "guide2",
 					HasContent: true, Metadata: GuideMetadata{
 						Scope:         "lesson",
-						Clarity:       "detailed",
 						Prerequisites: []string{"guide1"},
 					},
 				},
@@ -215,7 +186,6 @@ func TestValidateGraph(t *testing.T) {
 					ID:         "guide1",
 					HasContent: true, Metadata: GuideMetadata{
 						Scope:         "lesson",
-						Clarity:       "detailed",
 						Prerequisites: []string{"guide2"},
 					},
 				},
@@ -223,7 +193,6 @@ func TestValidateGraph(t *testing.T) {
 					ID:         "guide2",
 					HasContent: true, Metadata: GuideMetadata{
 						Scope:         "lesson",
-						Clarity:       "detailed",
 						Prerequisites: []string{"guide3"},
 					},
 				},
@@ -231,7 +200,6 @@ func TestValidateGraph(t *testing.T) {
 					ID:         "guide3",
 					HasContent: true, Metadata: GuideMetadata{
 						Scope:         "lesson",
-						Clarity:       "detailed",
 						Prerequisites: []string{"guide1"},
 					},
 				},
@@ -325,8 +293,9 @@ func TestCheckAcyclic(t *testing.T) {
 
 func TestValidateGraphRelaxedSubguides(t *testing.T) {
 	mockConfig := Manifest{
-		Scopes:           []string{"definition", "description", "explanation", "lesson"},
-		Clarities:        []string{"vague", "introductory", "detailed", "strict"},
+		Scopes: []string{"definition", "description", "explanation", "lesson"},
+		Adherences: []string{"vague", "introductory", "detailed", "strict"},
+
 		RelaxedSubguides: true,
 	}
 
@@ -335,15 +304,13 @@ func TestValidateGraphRelaxedSubguides(t *testing.T) {
 			ID:         "guide1",
 			HasContent: true, Metadata: GuideMetadata{
 				Scope:     "lesson", // 4
-				Clarity:   "detailed",
-				SubGuides: []SubGuideRelation{{Guide: "guide2", Clarity: "detailed", Segment: "1-10"}},
+				SubGuides: []SubGuideRelation{{Guide: "guide2", Adherence: "detailed", Segment: "1-10"}},
 			},
 		},
 		"guide2": {
 			ID:         "guide2",
 			HasContent: true, Metadata: GuideMetadata{
-				Scope:   "description", // 2 (differs by 2)
-				Clarity: "detailed",
+				Scope: "description", // 2 (differs by 2)
 			},
 		},
 	}

@@ -1,8 +1,7 @@
 ---
 prerequisites: []
 sub_guides:
-- {guide: Building C Programs, clarity: '', segment: ''}
-clarity: detailed
+- {guide: Building C Programs, adherence: '', segment: ''}
 scope: lesson
 tags: [c, chapter1]
 ---

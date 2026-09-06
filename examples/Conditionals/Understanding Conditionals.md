@@ -2,27 +2,26 @@
 prerequisites: []
 sub_guides:
     - guide: Conditionals
-      clarity: ""
+      adherence: ""
       segment: ""
     - guide: Verb Forms
-      clarity: ""
+      adherence: ""
       segment: ""
     - guide: Zero Conditional
-      clarity: ""
+      adherence: ""
       segment: ""
     - guide: First Conditional
-      clarity: ""
+      adherence: ""
       segment: ""
     - guide: Second Conditional
-      clarity: ""
+      adherence: ""
       segment: ""
     - guide: Third Conditional
-      clarity: ""
+      adherence: ""
       segment: ""
     - guide: Mixed Conditionals
-      clarity: ""
+      adherence: ""
       segment: ""
-clarity: introductory
 scope: lesson
 tags:
     - grammar

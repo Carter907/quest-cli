@@ -27,6 +27,11 @@ clarities:
   - detailed
   - introductory
   - vague
+adherences:
+  - strict
+  - detailed
+  - introductory
+  - vague
 tours:
   - name: Tour 1
     guides:
@@ -48,7 +53,7 @@ This command creates a markdown file with populated front-matter. You can also s
 If you want to link an existing sub-guide later on, you can use the `qst link` command:
 
 ```sh
-qst link "Understanding Exponents" --guide "Powers" --clarity detailed --segment 1-5
+qst link "Understanding Exponents" --guide "Powers" --adherence detailed --segment 1-5
 ```
 
 ### 3. Validate the structure

@@ -11,7 +11,6 @@ func TestParseGraph(t *testing.T) {
 
 	validGuide := `---
 scope: definition
-clarity: strict
 prerequisites:
   - other
 sub_guides:
@@ -68,9 +67,6 @@ No frontmatter at all.
 		}
 		if g.Metadata.Scope != "definition" {
 			t.Errorf("expected Scope 'definition', got '%s'", g.Metadata.Scope)
-		}
-		if g.Metadata.Clarity != "strict" {
-			t.Errorf("expected Clarity 'strict', got '%s'", g.Metadata.Clarity)
 		}
 		if len(g.Metadata.Prerequisites) != 1 || g.Metadata.Prerequisites[0] != "other" {
 			t.Errorf("expected 1 prerequisite 'other', got %v", g.Metadata.Prerequisites)

@@ -2,24 +2,23 @@
 prerequisites: []
 sub_guides:
     - guide: Truth Tables
-      clarity: ""
+      adherence: ""
       segment: ""
     - guide: Logical Equivalence
-      clarity: ""
+      adherence: ""
       segment: ""
     - guide: Logical AND
-      clarity: ""
+      adherence: ""
       segment: ""
     - guide: Logical OR
-      clarity: ""
+      adherence: ""
       segment: ""
     - guide: Exclusive OR
-      clarity: ""
+      adherence: ""
       segment: ""
     - guide: Negation
-      clarity: ""
+      adherence: ""
       segment: ""
-clarity: introductory
 scope: lesson
 tags:
     - logic
